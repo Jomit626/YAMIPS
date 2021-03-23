@@ -2,7 +2,7 @@
 # If ::create_path global variable is set, the project is created under that path instead of the working dir
 
 # Project specific settings. These must be updated for each project.
-set proj_name "iMIPS"
+set proj_name "YAMIPS"
 
 if {[info exists ::create_path]} {
 	set dest_dir $::create_path
@@ -23,7 +23,7 @@ set origin_dir ".."
 # Set the directory path for the original project from where this script was exported
 set orig_proj_dir "[file normalize "$origin_dir/proj"]"
 
-set src_dir $origin_dir/src
+set src_dir $origin_dir/src/hdl
 set repo_dir $origin_dir/repo
 
 # # Set the board repo
@@ -44,7 +44,7 @@ set_property "default_lib" "xil_defaultlib" $obj
 set_property "part" $part $obj
 # set_property "board_part" $brd_part $obj
 set_property "simulator_language" "Mixed" $obj
-set_property "target_language" "VHDL" $obj
+set_property "target_language" "verilog" $obj
 
 # Uncomment the following 3 lines to greatly increase build speed while working with IP cores (and/or block diagrams)
 set_property "corecontainer.enable" "0" $obj
@@ -61,6 +61,11 @@ if {[string equal [get_filesets -quiet constrs_1] ""]} {
   create_fileset -constrset constrs_1
 }
 
+# Create 'sim_1' fileset (if not found)
+if {[string equal [get_filesets -quiet sim_1] ""]} {
+  create_fileset -simset sim_1
+}
+
 # Set IP repository paths
 set obj [get_filesets sources_1]
 set_property "ip_repo_paths" "[file normalize $repo_dir]" $obj
@@ -69,18 +74,26 @@ set_property "ip_repo_paths" "[file normalize $repo_dir]" $obj
 update_ip_catalog -rebuild
 
 # Add conventional sources
-add_files -quiet $src_dir/hdl
+add_files -quiet $src_dir/rtl
+
+# Set Verilog Headers
+set_property file_type {Verilog Header} [get_files  */rtl/include/*]
 
 # Add IPs
 # TODO: handle IP containers files
-add_files -quiet [glob -nocomplain ../src/ip/*/*.xci]
+add_files -quiet [glob -nocomplain ../src/hdl/ip/*/*.xci]
+set_property top CPU_top [get_filesets -quiet sources_1]
 
 # Add constraints
 add_files -fileset constrs_1 -quiet $src_dir/constraints
 
+# Add testbranchs
+add_files -fileset sim_1 -quiet $src_dir/tb
+
 # Create 'synth_1' run (if not found)
 if {[string equal [get_runs -quiet synth_1] ""]} {
-  create_run -name synth_1 -part $part -flow {Vivado Synthesis 2015} -strategy "Vivado Synthesis Defaults" -constrset constrs_1
+  create_run -name synth_1 -part $part -constrset constrs_1
+#  create_run -name synth_1 -part $part -flow {Vivado Synthesis 2015} -strategy "Vivado Synthesis Defaults" -constrset constrs_1
 } else {
   set_property strategy "Vivado Synthesis Defaults" [get_runs synth_1]
   set_property flow "Vivado Synthesis 2015" [get_runs synth_1]
@@ -96,7 +109,7 @@ current_run -synthesis [get_runs synth_1]
 
 # Create 'impl_1' run (if not found)
 if {[string equal [get_runs -quiet impl_1] ""]} {
-  create_run -name impl_1 -part $part -flow {Vivado Implementation 2015} -strategy "Vivado Implementation Defaults" -constrset constrs_1 -parent_run synth_1
+  create_run -name impl_1 -part $part -strategy "Vivado Implementation Defaults" -constrset constrs_1 -parent_run synth_1
 } else {
   set_property strategy "Vivado Implementation Defaults" [get_runs impl_1]
   set_property flow "Vivado Implementation 2015" [get_runs impl_1]
@@ -129,32 +142,29 @@ if {[llength $bd_list] != 0} {
   set file "$origin_dir/src/bd/$design_name/$design_name.bd"
   set file [file normalize $file]
   set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-  if { ![get_property "is_locked" $file_obj] } {
-    set_property "synth_checkpoint_mode" "Hierarchical" $file_obj
-  }
- 
-  # Generate the wrapper 
-  set design_name [get_bd_designs]
-  add_files -norecurse [make_wrapper -files [get_files $design_name.bd] -top -force]
-
-  set obj [get_filesets sources_1]
-  set_property "top" "${design_name}_wrapper" $obj
+#  
+#   # Generate the wrapper 
+#   set design_name [get_bd_designs]
+#   add_files -norecurse [make_wrapper -files [get_files $design_name.bd] -top -force]
+# 
+#   set obj [get_filesets sources_1]
+#   set_property "top" "${design_name}_wrapper" $obj
 }
 
-set sdk_dir $origin_dir/sdk
-
-set hw_list [glob -nocomplain $sdk_dir/*hw_platform*]
-if {[llength $hw_list] != 0} {
-  foreach hw_plat $hw_list {
-	file delete -force $hw_plat
-  }
-}
-
-set sdk_list [glob -nocomplain $sdk_dir/*]
-set sdk_list [lsearch -inline -all -not -exact $sdk_list "../sdk/.keep"]
-if {[llength $sdk_list] != 0} {
-	exec xsct -eval "setws -switch ../sdk; importproject ../sdk"
-}
+# set sdk_dir $origin_dir/sdk
+# 
+# set hw_list [glob -nocomplain $sdk_dir/*hw_platform*]
+# if {[llength $hw_list] != 0} {
+#   foreach hw_plat $hw_list {
+# 	file delete -force $hw_plat
+#   }
+# }
+# 
+# set sdk_list [glob -nocomplain $sdk_dir/*]
+# set sdk_list [lsearch -inline -all -not -exact $sdk_list "../sdk/.keep"]
+# if {[llength $sdk_list] != 0} {
+# 	exec xsct -eval "setws -switch ../sdk; importproject ../sdk"
+# }
 # 
 # 
 # puts "INFO: Block design ready: $design_name.bd"

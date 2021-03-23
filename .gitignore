@@ -1,6 +1,13 @@
 # Blacklist everything
 /*
 
+# readme.md
+!README.md
+
+*.o
+*.out
+*.coe 
+
 # whitelist the necessary files and folders, this gets everything from inside them too
 !.gitignore
 !.gitmodules
@@ -10,6 +17,9 @@
 !repo/
 !sdk/
 !src/
+!boot_loader/
+!tools/
+!tests/
 
 #Digilent Added ignore rules for Vivado projects
 
@@ -46,14 +56,14 @@ repo/**
 repo/cache/**
 
 # Make sure we keep only xci files in ip src subfolder
-src/ip/*/**
-!src/ip/*/*.xci
-!src/ip/*/*.prj
+src/hdl/ip/*/**
+!src/hdl/ip/*/*.xci
+!src/hdl/ip/*/*.prj
 # Do not ignore anything in src/others
-!src/others/*
+!src/hdl/others/*
 # Do not ignore block diagram files
-!src/bd/**
-
+src/hdl/bd/*/**
+!src/hdl/bd/*/*.bd
 
 # ignore everything in project folder
 proj/*
