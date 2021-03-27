@@ -259,8 +259,3 @@ set_property CONFIG_MODE SPIx4 [current_design]
 
 
 set_false_path -from [get_pins -filter { NAME =~  "*regster*" && NAME =~  "*C*" && NAME !~  "*CE*" } -of_objects [get_cells -hierarchical -filter { NAME =~  "*regfile_inst_0*" }]] -to [get_pins -filter { NAME =~  "*pc_reg*" || NAME =~  "*pc_dup_reg*" && NAME =~  "*D*" } -of_objects [get_cells -hierarchical -filter { NAME =~  "*if_unit*" }]]
-
-set_property LOC RAMB36_X1Y12 [get_cells {CPU_bd_inst_0/axi_bram_ctrl_1_bram/U0/inst_blk_mem_gen/gnbram.gnative_mem_map_bmg.native_mem_map_blk_mem_gen/valid.cstr/ramloop[1].ram.r/prim_noinit.ram/DEVICE_7SERIES.WITH_BMM_INFO.SP.SIMPLE_PRIM36.SP_NO_ECC_ATTR.ram}]
-set_property LOC RAMB36_X1Y11 [get_cells {CPU_bd_inst_0/axi_bram_ctrl_1_bram/U0/inst_blk_mem_gen/gnbram.gnative_mem_map_bmg.native_mem_map_blk_mem_gen/valid.cstr/ramloop[0].ram.r/prim_noinit.ram/DEVICE_7SERIES.WITH_BMM_INFO.SP.SIMPLE_PRIM36.SP_NO_ECC_ATTR.ram}]
-set_property LOC RAMB36_X1Y10 [get_cells {CPU_bd_inst_0/axi_bram_ctrl_0_bram/U0/inst_blk_mem_gen/gnbram.gnative_mem_map_bmg.native_mem_map_blk_mem_gen/valid.cstr/ramloop[0].ram.r/prim_init.ram/DEVICE_7SERIES.WITH_BMM_INFO.SP.SIMPLE_PRIM36.ram}]
-set_property LOC RAMB36_X2Y11 [get_cells {CPU_bd_inst_0/axi_bram_ctrl_0_bram/U0/inst_blk_mem_gen/gnbram.gnative_mem_map_bmg.native_mem_map_blk_mem_gen/valid.cstr/ramloop[1].ram.r/prim_init.ram/DEVICE_7SERIES.WITH_BMM_INFO.SP.SIMPLE_PRIM36.ram}]

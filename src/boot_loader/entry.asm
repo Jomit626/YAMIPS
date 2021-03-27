@@ -6,7 +6,7 @@
 
 __start:
     lui $sp, 0xC200
-    ori $sp, 0x1000
+    ori $sp, 0x2000
 
     j main
     nop

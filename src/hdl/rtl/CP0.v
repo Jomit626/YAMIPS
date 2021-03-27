@@ -1,24 +1,6 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 2021/03/11 15:37:04
-// Design Name: 
-// Module Name: CP0
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
 
+`include "config.v"
 
 module CP0(
     input wire CLK,
@@ -39,7 +21,7 @@ module CP0(
 
     output wire [31:0] REG_OUT,
     input wire [31:0] REG_IN,
-    input wire [5:0] REG_R,
+    input wire [4:0] REG_R,
     input wire REG_WE,
 
     input wire S_SYSCALL,
@@ -50,14 +32,16 @@ module CP0(
     reg [31:0] int_enter;
     reg [7:0] interrupt_mask;
     reg [3:0] exception_code;
-    wire [31:0] cause = { 16'h0000 , interrupt_mask, 1'b0, exception_code, 2'b00 };
+    wire [31:0] cause = { 16'h0000 , interrupt_mask, 2'b0, exception_code, 2'b00 };
 
     wire [7:0] input_int = {INT7,INT6,INT5,INT4,INT3,INT2,INT1, 1'b0};
+    reg [7:0] int_latch;
     reg [7:0] pending_int;
     wire [7:0] available_int = interrupt_mask & pending_int;
 
     wire s_enter_int;
     wire [7:0] enter_int;
+    reg [7:0] enter_int_d;
     wire [2:0] enter_int_index;
 
     // I/O
@@ -100,41 +84,57 @@ module CP0(
         .ANY(s_enter_int)
     );
 
-    // record pending interupt
+    // latch pending interupt
     genvar i;
     generate
-        for(i=0;i<8;i=i+1)begin : sample_int
-            always @(posedge CLK or posedge input_int[i]) begin
+        for(i=0;i<8;i=i+1)begin : int_latchs
+            always @(posedge CLK) begin
+            //always @(posedge input_int[i] or negedge RESETN or posedge enter_int_d[i]) begin
+                if(~RESETN)
+                    int_latch[i] <= 1'b0;
+                else if(enter_int_d[i])
+                    int_latch[i] <= 1'b0;
+                else if(input_int[i])
+                    int_latch[i] <= 1'b1;
+            end
+        end
+    endgenerate
+
+    generate
+        for(i=0;i<8;i=i+1)begin : pending_ints
+            always @(posedge CLK) begin
                 if(~RESETN)
                     pending_int[i] <= 1'b0;
-                else begin 
-                    if (enter_int[i] & PIPELINE_READY)
+                else begin
+                    if(enter_int[i] & PIPELINE_READY)
                         pending_int[i] <= 1'b0;
-                    else if(input_int[i])
-                        pending_int[i] <= 1'b1;
+                    else
+                        pending_int[i] <= int_latch[i];
                 end
             end
         end
     endgenerate
 
+    always @(posedge CLK) begin
+        if(~RESETN)
+            enter_int_d <= 'd0;
+        else if(PIPELINE_READY)
+            enter_int_d <= enter_int;
+    end
 
     // Cause reg
     wire s_write_cause_reg = ((REG_R == `CP0_CAUSE )&& REG_WE);
     //      mask part
-    generate
-        for(i=0;i<8;i=i+1)begin : mask
-            always @(posedge CLK) begin
-                if(~RESETN)
-                    interrupt_mask[i] <= 1'b0;
-                else if(PIPELINE_READY) begin 
-                    if (enter_int[i])
-                        interrupt_mask[i] <= 1'b0;
-                    else if(s_write_cause_reg)
-                        interrupt_mask[i] <= REG_IN[8 + i];
-                end
-            end
+    always @(posedge CLK) begin
+        if(~RESETN)
+            interrupt_mask <= 'd0;
+        else if(PIPELINE_READY) begin 
+            if (s_enter_int)
+                interrupt_mask <= 'd0;
+            else if(s_write_cause_reg)
+                interrupt_mask <= REG_IN[15:8];
         end
-    endgenerate
+    end
 
     // exception code
     always @(posedge CLK) begin

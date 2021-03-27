@@ -8,7 +8,7 @@ help_info = 'test.py -c <COMx|/dev/ttySx> -f <file>'
 COMMAND_PROGRAM=0xf0f0f0f0
 COMMAND_JRL=0x0f0f0f0f
 COMMAND_ECHO=0x12345678
-# python tools/program.py -f test/entry.out -c COM4
+# python tools/program.py -f tests/example/example.out -c COM4
 target_section_names = ['.text', '.data']
 
 num_to_bytearray = lambda x : bytearray([(x >> 24) & 0xff,

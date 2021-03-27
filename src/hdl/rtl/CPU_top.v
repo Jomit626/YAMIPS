@@ -36,6 +36,9 @@ module CPU_top (
 
     input wire UART_TXD_IN,
     output wire UART_RXD_OUT
+
+    //input wire PS2_CLK,
+    //input wire PS2_DATA
 );
     CPU_bd CPU_bd_inst_0(
         .CLK100MHZ(CLK100MHZ),
@@ -75,5 +78,8 @@ module CPU_top (
 
         .uart_rxd(UART_TXD_IN),
         .uart_txd(UART_RXD_OUT)
+
+        //.PS2_CLK(PS2_CLK),
+        //.PS2_DATA(PS2_DATA)
     );  
 endmodule

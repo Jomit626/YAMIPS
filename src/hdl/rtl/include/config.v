@@ -68,10 +68,10 @@
 `define BUS_DECODE_RES_JMP              34
 `define BUS_DECODE_RES_JR               35
 
-`define CP0_RW_BUS_WIDTH            39
+`define CP0_RW_BUS_WIDTH            38
 `define BUS_DECODE_CP0_REG_DATA     31:0
-`define BUS_DECODE_CP0_REG          37:32
-`define BUS_DECODE_CP0_REG_W        38
+`define BUS_DECODE_CP0_REG          36:32
+`define BUS_DECODE_CP0_REG_W        37
 
 `define EX_FASTFORWARD_CONTRAL_BUS_WIDTH      4
 `define BUS_DECODE_RS_MEM_FASTFORWARD   0

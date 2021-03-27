@@ -1,4 +1,4 @@
-#include "uart.h"
+#include "../driver/uart.h"
 #include "bootloader.h"
 
 #define SEG_DISPLAY_ADDR ((volatile unsigned *)0x40000000)

@@ -3,16 +3,20 @@
 #define SEG_DISPLAY (*SEG_DISPLAY_ADDR)
 #define DECLARE_SEG_DISPLAY register volatile unsigned * const seg_display = SEG_DISPLAY_ADDR
 
-void asm_func();
+void load_int_enter();
 
-int a = 114514; 
-
-void aaa(){
+void main(){
     DECLARE_SEG_DISPLAY;
-    register unsigned i;
-    a = 2;
-    for(i=0;i<0x02000000;i++)
-        *seg_display = i;
-    asm_func();
+    register unsigned i, j;
+    j = 0x00080000;
+    load_int_enter();
+
+    while(1){
+        for(i=0;i<0x01800000;i++)
+            ;
+        j += 0x00010000;
+        *seg_display = j;
+    }
+    
     return;
 }
