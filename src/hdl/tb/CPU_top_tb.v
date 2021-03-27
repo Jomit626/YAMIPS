@@ -27,9 +27,41 @@ module CPU_top_tb (
     wire CG;
     wire DP;
 
-    
+    wire [12:0] ddr2_addr;
+    wire [2:0] ddr2_ba;
+    wire  ddr2_cas_n;
+    wire [0:0] ddr2_ck_n;
+    wire [0:0] ddr2_ck_p;
+    wire [0:0] ddr2_cke;
+    wire [0:0] ddr2_cs_n;
+    wire [1:0] ddr2_dm;
+    wire [15:0] ddr2_dq;
+    wire [1:0] ddr2_dqs_n;
+    wire [1:0] ddr2_dqs_p;
+    wire [0:0] ddr2_odt;
+    wire  ddr2_ras_n;
+    wire  ddr2_we_n;
+
     reg UART_TXD_IN;
     wire UART_RXD_OUT;
+
+    ddr2_model ddr2_model_tb_inst_0(
+        .ck(ddr2_ck_p),
+        .ck_n(ddr2_ck_n),
+        .cke(ddr2_cke),
+        .cs_n(ddr2_cs_n),
+        .ras_n(ddr2_ras_n),
+        .cas_n(ddr2_cas_n),
+        .we_n(ddr2_we_n),
+        .dm_rdqs(ddr2_dm),
+        .ba(ddr2_ba),
+        .addr(ddr2_addr),
+        .dq(ddr2_dq),
+        .dqs(ddr2_dqs_p),
+        .dqs_n(ddr2_dqs_n),
+        .rdqs_n(),
+        .odt(ddr2_odt)
+    );
 
     CPU_top CPU_top_tb_inst_0(
         .CLK100MHZ(CLK100MHZ),
@@ -50,6 +82,21 @@ module CPU_top_tb (
         .CG(CG),
         .DP(DP),
 
+        .ddr2_addr(ddr2_addr),
+        .ddr2_ba(ddr2_ba),
+        .ddr2_cas_n(ddr2_cas_n),
+        .ddr2_ck_n(ddr2_ck_n),
+        .ddr2_ck_p(ddr2_ck_p),
+        .ddr2_cke(ddr2_cke),
+        .ddr2_ras_n(ddr2_ras_n),
+        .ddr2_we_n(ddr2_we_n),
+        .ddr2_dq(ddr2_dq),
+        .ddr2_dqs_n(ddr2_dqs_n),
+        .ddr2_dqs_p(ddr2_dqs_p),
+        .ddr2_cs_n(ddr2_cs_n),
+        .ddr2_dm(ddr2_dm),
+        .ddr2_odt(ddr2_odt),
+
         .UART_TXD_IN(UART_TXD_IN),
         .UART_RXD_OUT(UART_RXD_OUT)
     );  
@@ -63,7 +110,6 @@ module CPU_top_tb (
         UART_TXD_IN = 1;
         #(10*T) CPU_RESETN = 1;
 
-        #(2000*T) program();
         $stop;
     end
 
@@ -118,127 +164,6 @@ module CPU_top_tb (
             UART_TXD_IN = 1;
             #(`UART_BPS_DELAY_NS);
         end 
-    endtask
-    task program;
-    begin
-    uart_sent_byte( 8'hf0 );
-    uart_sent_byte( 8'hf0 );
-    uart_sent_byte( 8'hf0 );
-    uart_sent_byte( 8'hf0 );
-    uart_sent_byte( 8'hc2 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h18 );
-    uart_sent_byte( 8'h27 );
-    uart_sent_byte( 8'hbd );
-    uart_sent_byte( 8'hff );
-    uart_sent_byte( 8'hf0 );
-    uart_sent_byte( 8'haf );
-    uart_sent_byte( 8'hbe );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'hc );
-    uart_sent_byte( 8'haf );
-    uart_sent_byte( 8'hb1 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h8 );
-    uart_sent_byte( 8'haf );
-    uart_sent_byte( 8'hb0 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h4 );
-    uart_sent_byte( 8'h3 );
-    uart_sent_byte( 8'ha0 );
-    uart_sent_byte( 8'hf0 );
-    uart_sent_byte( 8'h25 );
-    uart_sent_byte( 8'h24 );
-    uart_sent_byte( 8'h11 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h4 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h80 );
-    uart_sent_byte( 8'h25 );
-    uart_sent_byte( 8'h10 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h3 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'hae );
-    uart_sent_byte( 8'h30 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h26 );
-    uart_sent_byte( 8'h10 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h1 );
-    uart_sent_byte( 8'h3c );
-    uart_sent_byte( 8'h2 );
-    uart_sent_byte( 8'h2 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h2 );
-    uart_sent_byte( 8'h2 );
-    uart_sent_byte( 8'h10 );
-    uart_sent_byte( 8'h2b );
-    uart_sent_byte( 8'h14 );
-    uart_sent_byte( 8'h40 );
-    uart_sent_byte( 8'hff );
-    uart_sent_byte( 8'hfb );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h3 );
-    uart_sent_byte( 8'hc0 );
-    uart_sent_byte( 8'he8 );
-    uart_sent_byte( 8'h25 );
-    uart_sent_byte( 8'h8f );
-    uart_sent_byte( 8'hbe );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'hc );
-    uart_sent_byte( 8'h8f );
-    uart_sent_byte( 8'hb1 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h8 );
-    uart_sent_byte( 8'h8f );
-    uart_sent_byte( 8'hb0 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h4 );
-    uart_sent_byte( 8'h27 );
-    uart_sent_byte( 8'hbd );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h10 );
-    uart_sent_byte( 8'h3 );
-    uart_sent_byte( 8'he0 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h8 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h0 );
-
-    uart_sent_byte( 8'hf );
-    uart_sent_byte( 8'hf );
-    uart_sent_byte( 8'hf );
-    uart_sent_byte( 8'hf );
-    uart_sent_byte( 8'hc2 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h0 );
-    uart_sent_byte( 8'h0 );
-    end
     endtask
 endmodule
 

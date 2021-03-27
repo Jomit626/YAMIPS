@@ -8,6 +8,7 @@ void _test();
 void main(){
     CRAL_REG = CRAL_RST_TX | CRAL_RST_RX & ~CRAL_EN_INT;
     SEG_DISPLAY = 1;
+    //_test();
     while(1){
         unsigned data = __uart_read_word_wait();
         SEG_DISPLAY = data;
@@ -67,34 +68,54 @@ void _command_echo(){
         *tx_fifo = data;
     }
 }
-/*
+
 void _test(){
-    unsigned *ins = (unsigned*)0xC2000000;
+    unsigned *ins = (unsigned*)0xC8000000;
     void (*enter)(void);
-    enter = (void (*)(void))0xC2000000;
+    enter = (void (*)(void))0xc8000020;
     ins[0] =0X27bdfff0;
-    ins[1] =0Xafbe000c;
-    ins[2] =0Xafb10008;
-    ins[3] =0Xafb00004;
-    ins[4] =0X3a0f025;
-    ins[5] =0X3c114000;
-    ins[6] =0X8025;
-    ins[7] =0X10000003;
-    ins[8] =0X0;
-    ins[9] =0Xae300000;
-    ins[10] =0X26100001;
-    ins[11] =0X24020005;
-    ins[12] =0X202102b;
-    ins[13] =0X1440fffb;
-    ins[14] =0X0;
-    ins[15] =0X0;
-    ins[16] =0X3c0e825;
-    ins[17] =0X8fbe000c;
-    ins[18] =0X8fb10008;
-    ins[19] =0X8fb00004;
-    ins[20] =0X27bd0010;
-    ins[21] =0X3e00008;
+    ins[1] =0X3c104000;
+    ins[2] =0Xae1d0000;
+    ins[3] =0X3e00008;
+    ins[4] =0X27bd0010;
+    ins[5] =0X0;
+    ins[6] =0X0;
+    ins[7] =0X0;
+    ins[8] =0X27bdffd8;
+    ins[9] =0Xafbf0024;
+    ins[10] =0Xafbe0020;
+    ins[11] =0Xafb0001c;
+    ins[12] =0X3a0f025;
+    ins[13] =0X3c1cc802;
+    ins[14] =0X279c80b0;
+    ins[15] =0Xafbc0010;
+    ins[16] =0X3c104000;
+    ins[17] =0X3c02c801;
+    ins[18] =0X24030002;
+    ins[19] =0Xac4300b0;
+    ins[20] =0Xf825;
+    ins[21] =0X10000003;
     ins[22] =0X0;
-    ins[23] =0X0;
+    ins[23] =0Xae1f0000;
+    ins[24] =0X27ff0001;
+    ins[25] =0X3c020200;
+    ins[26] =0X3e2102b;
+    ins[27] =0X1440fffb;
+    ins[28] =0X0;
+    ins[29] =0X8f828018;
+    ins[30] =0X40c825;
+    ins[31] =0X411ffe0;
+    ins[32] =0X0;
+    ins[33] =0X8fdc0010;
+    ins[34] =0X0;
+    ins[35] =0X3c0e825;
+    ins[36] =0X8fbf0024;
+    ins[37] =0X8fbe0020;
+    ins[38] =0X8fb0001c;
+    ins[39] =0X27bd0028;
+    ins[40] =0X3e00008;
+    ins[41] =0X0;
+    ins[42] =0X0;
+    ins[43] =0X0;
     enter();
-}*/
+}

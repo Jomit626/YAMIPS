@@ -5,8 +5,8 @@
 .type   __start, @function
 
 __start:
-    lui $sp, 0xC200
-    ori $sp, 0x2000
+    lui $sp, 0xD000
+    ori $sp, 0x0000
 
     j main
     nop

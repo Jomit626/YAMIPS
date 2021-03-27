@@ -20,6 +20,7 @@
 !boot_loader/
 !tools/
 !tests/
+!Makefile
 
 #Digilent Added ignore rules for Vivado projects
 
