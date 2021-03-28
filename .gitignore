@@ -5,6 +5,7 @@
 !README.md
 
 *.o
+*.d
 *.out
 *.coe 
 

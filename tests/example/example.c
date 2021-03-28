@@ -14,5 +14,7 @@ void aaa(){
     for(i=0;i<0x02000000;i++)
         *seg_display = i;
     asm_func();
+    for(i=0;i<0x02000000;i++)
+        ;
     return;
 }

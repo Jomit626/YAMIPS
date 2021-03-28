@@ -42,9 +42,17 @@ module CPU_top_tb (
     wire  ddr2_ras_n;
     wire  ddr2_we_n;
 
+    wire[3:0] VGA_R;
+    wire[3:0] VGA_G;
+    wire[3:0] VGA_B;
+
+    wire VGA_HS;
+    wire VGA_VS;
+
     reg UART_TXD_IN;
     wire UART_RXD_OUT;
 
+    
     ddr2_model ddr2_model_tb_inst_0(
         .ck(ddr2_ck_p),
         .ck_n(ddr2_ck_n),
@@ -97,6 +105,13 @@ module CPU_top_tb (
         .ddr2_dm(ddr2_dm),
         .ddr2_odt(ddr2_odt),
 
+        .VGA_R(),
+        .VGA_G(),
+        .VGA_B(),
+
+        .VGA_HS(),
+        .VGA_VS(),
+
         .UART_TXD_IN(UART_TXD_IN),
         .UART_RXD_OUT(UART_RXD_OUT)
     );  
@@ -107,6 +122,7 @@ module CPU_top_tb (
     end
 
     initial begin
+        //#200000000;
         UART_TXD_IN = 1;
         #(10*T) CPU_RESETN = 1;
 

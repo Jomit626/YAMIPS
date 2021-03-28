@@ -1,6 +1,6 @@
-test-cases = 
+test-cases = vdma
 
-#test-cases += example 
+test-cases += example 
 #test-cases += interrupt
 
 

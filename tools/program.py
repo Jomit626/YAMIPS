@@ -9,7 +9,7 @@ COMMAND_PROGRAM=0xf0f0f0f0
 COMMAND_JRL=0x0f0f0f0f
 COMMAND_ECHO=0x12345678
 # python tools/program.py -f tests/example/example.out -c COM4
-target_section_names = ['.text', '.data']
+target_section_names = ['.text', '.data', '.rodata']
 
 num_to_bytearray = lambda x : bytearray([(x >> 24) & 0xff,
                                          (x >> 16) & 0xff,
@@ -50,7 +50,8 @@ def main():
                     baudrate=9600,
                     bytesize=EIGHTBITS,
                     parity=PARITY_NONE,
-                    stopbits=STOPBITS_ONE ) 
+                    stopbits=STOPBITS_ONE,
+                    timeout=2.0 ) 
         if echo:
             write_to_serial(com, COMMAND_ECHO, 0)
             exit(0)

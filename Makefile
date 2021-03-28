@@ -17,7 +17,7 @@ export RAM_ADDR_END	= 0xD0000000
 export PC_INIT = $(ROM_ADDR)
 export STACK_START = $(RAM_ADDR_END)
 export TEXT_ADDR = $(RAM_ADDR)
-export DATA_ADDR = 0xC9000000
+export DATA_ADDR = 0xCA000000
 
 
 export PROJDIR= $(shell pwd)
