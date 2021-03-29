@@ -203,8 +203,8 @@ module decoder(
         i_slt | i_sltu | i_sw | i_beq | i_bne |
         i_mtc0 ;
 
-    assign s_reg_info_bus[`BUS_DECODE_RS] = i_syscall ? 5'd4 : rs;
-    assign s_reg_info_bus[`BUS_DECODE_RT] = i_syscall ? 5'd2 : rt;
+    assign s_reg_info_bus[`BUS_DECODE_RS] = rs;
+    assign s_reg_info_bus[`BUS_DECODE_RT] = rt;
     assign s_reg_info_bus[`BUS_DECODE_RS_USE] = s_rs_used;
     assign s_reg_info_bus[`BUS_DECODE_RT_USE] = s_rt_used;
 
