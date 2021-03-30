@@ -1,0 +1,29 @@
+obj-asm	= ../interrupt/interrupt_enter.o
+obj-c	= display.o fake_malloc.o game.o
+
+ENTER	= main
+OUTPUT 	= game.out
+
+LDFLAGS=  -e $(ENTER) -call_shared -Ttext $(TEXT_ADDR) -Tdata $(DATA_ADDR)
+
+$(OUTPUT) : $(obj-asm) $(obj-c) 
+	$(LD) $(LDFLAGS) $(obj-asm) $(obj-c) -o $@
+
+include $(obj-c:.o=.d)
+
+$(obj-asm) : %.o : %.asm
+	$(AS) $(ASFLAG) $< -o $@
+
+$(obj-c) : %.o : %.c
+	$(CC) $(CFLAG) $< -o $@
+
+%.d: %.c
+	@set -e; rm -f $@; \
+	$(CC) -MM $(CPPFLAGS) $< > $@.$$$$; \
+	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
+	rm -f $@.$$$$
+
+clean :
+	-rm $(TEST_OUT) $(obj-asm) $(obj-c)
+
+.PHONY: clean

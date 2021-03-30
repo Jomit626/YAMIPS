@@ -2,7 +2,7 @@
 #include "../../src/driver/vdma.h"
 //python ./tools/program.py -f ./tests/vdma/vdma.out -c COM4
 
-#include "image.h"
+//#include "image.h"
 
 #define TGP_BASE_ADDR 0x44A00000
 
@@ -16,13 +16,13 @@ void main(){
     register volatile unsigned *vdma_sr = VDMA_MM2S_SR;
     register unsigned* addr = VDMA_FRAME_ADDR;
     register unsigned color1 = 0x00000000;
-    register unsigned color2 = 0x0000000f;
-    register unsigned color3 = 0x000000f0;
-    register unsigned color4 = 0x000000ff;
-    register unsigned color5 = 0x00000f00;
-    register unsigned color6 = 0x00000f0f;
-    register unsigned color7 = 0x00000ff0;
-    register unsigned color8 = 0x00000fff;
+    register unsigned color2 = 0x000f000f;
+    register unsigned color3 = 0x00f000f0;
+    register unsigned color4 = 0x00ff00ff;
+    register unsigned color5 = 0x0f000f00;
+    register unsigned color6 = 0x0f0f0f0f;
+    register unsigned color7 = 0x0ff00ff0;
+    register unsigned color8 = 0x0fff0fff;
     register int i, j, k;
     
     for(i=0;i<600;i++){

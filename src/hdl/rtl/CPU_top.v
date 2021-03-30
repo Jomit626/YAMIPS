@@ -54,11 +54,11 @@ module CPU_top (
     CPU_bd CPU_bd_inst_0(
         .CLK100MHZ(CLK100MHZ),
         .CPU_RESETN(CPU_RESETN),
-        .INT1(BTNC),
-        .INT2(BTNU),
-        .INT3(BTNL),
-        .INT4(BTNR),
-        .INT5(BTND),
+        .BTNU(BTNU),
+        .BTNL(BTNL),
+        .BTNR(BTNR),
+        .BTND(BTND),
+        .BTNC(BTNC),
         .INT6(0),
         .INT7(0),
 

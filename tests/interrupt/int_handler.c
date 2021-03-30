@@ -13,10 +13,17 @@ void main(){
 
     while(1){
         for(i=0;i<0x01800000;i++)
-            ;
+            *seg_display = j;
         j += 0x00010000;
-        *seg_display = j;
     }
     
+    return;
+}
+
+void int_handler(unsigned cause){
+    SEG_DISPLAY = cause;
+
+    for(register int i=0;i<0x01800000;i++)
+        ;
     return;
 }

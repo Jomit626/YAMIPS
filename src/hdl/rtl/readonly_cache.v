@@ -5,7 +5,7 @@ module readonly_cache #(
     parameter integer C_ADDRESS_WIDTH = 32,
 
     parameter integer C_CACHE_LINE_CNT = 8,
-    parameter integer C_CACHE_LINE_WIDTH = 128,
+    parameter integer C_CACHE_LINE_WIDTH = 512,
     parameter integer C_CACHE_SET_CNT = 2,
 
     parameter integer C_CACHE_LRU_COUNTER_WIDTH = 8
