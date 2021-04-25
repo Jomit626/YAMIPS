@@ -69,7 +69,7 @@ module fastforward(
             if(s_branch_jr_stalled)
                 s_branch_jr_stalled <= 'b0;
             else
-                s_branch_jr_stalled <= s_branch_jr_stall;
+                s_branch_jr_stalled <= s_branch_jr_stall & ~s_loaduse;
         end
     end
 

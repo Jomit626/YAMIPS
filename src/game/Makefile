@@ -1,5 +1,5 @@
 obj-asm	= ../interrupt/interrupt_enter.o
-obj-c	= display.o fake_malloc.o game.o
+obj-c	= display.o fake_malloc.o game.o engin.o
 
 ENTER	= main
 OUTPUT 	= game.out

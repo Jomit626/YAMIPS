@@ -1,5 +1,5 @@
 obj-asm	= 
-obj-c	= graphic.o ../../src/game/graphic.o
+obj-c	= graphic.o ../../src/game/display.o
 
 ENTER	= main
 OUTPUT 	= graphic.out
@@ -15,7 +15,7 @@ $(obj-asm) : %.o : %.asm
 	$(AS) $(ASFLAG) $< -o $@
 
 $(obj-c) : %.o : %.c
-	$(CC) $(CFLAG) $< -o $@
+	$(CC) $(CFLAG) -O3 $< -o $@
 
 %.d: %.c
 	@set -e; rm -f $@; \

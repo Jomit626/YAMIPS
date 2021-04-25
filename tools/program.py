@@ -9,7 +9,7 @@ COMMAND_PROGRAM=0xf0f0f0f0
 COMMAND_JRL=0x0f0f0f0f
 COMMAND_ECHO=0x12345678
 # python tools/program.py -f tests/example/example.out -c COM4
-target_section_names = ['.text', '.data', '.rodata', '.bss']
+target_section_names = ['.text', '.data', '.rodata', '.bss', '.sbss', '.got']
 
 num_to_bytearray = lambda x : bytearray([(x >> 24) & 0xff,
                                          (x >> 16) & 0xff,
@@ -69,10 +69,12 @@ def main():
         print ('Datasize:',len(data)//4)
         if not test:
             write_to_serial(com, COMMAND_PROGRAM, addr, data)
-            n = read_word_from_serial(com)
-            print ('Recived:',n)
-            if n != len(data)//4:
-                print ('Error!')
+            #n = read_word_from_serial(com)
+            
+            #if n != len(data)//4:
+            #    print ('Error!')
+            #else:
+            #    print ('Write', name, 'Success\n')
         else:
             test_print(COMMAND_PROGRAM, addr, data)
     
@@ -80,8 +82,8 @@ def main():
     print ('JAL to address', hex(enter_addr))
     if not test:
         write_to_serial(com, COMMAND_JRL, enter_addr)
-        n = read_word_from_serial(com)
-        print ('JAL to address', hex(n))
+        #n = read_word_from_serial(com)
+        #print ('JAL to address', hex(n))
     else:
         test_print(COMMAND_JRL, enter_addr)
 def process_file(filename):

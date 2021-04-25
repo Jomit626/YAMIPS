@@ -1,5 +1,5 @@
 #include "../../src/driver/segment_display.h"
-#include "../../src/game/graphic.h"
+#include "../../src/game/display.h"
 #include "../../src/math/math.h"
 unsigned long __stack_chk_guard = 0xBAAAAAAD;
 void __stack_chk_guard_setup(void)

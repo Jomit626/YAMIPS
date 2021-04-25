@@ -9,8 +9,17 @@ module core_test_tb (
     reg CPU_RESETN = 0;
 
     core_test_bd core_test_bd_inst_tb_0(
-        .CLK100MHZ(CLK100MHZ),
-        .CPU_RESETN(CPU_RESETN)
+        .clk_in(CLK100MHZ),
+        .resetn(CPU_RESETN),
+
+        .BTNU(0),
+        .BTNL(0),
+        .BTNR(0),
+        .BTND(0),
+        .BTNC(0),
+
+        .INT6(0),
+        .INT7(0)
     );  
 
     always #(T/2) CLK100MHZ = ~CLK100MHZ;
@@ -19,7 +28,7 @@ module core_test_tb (
     end
 
     initial begin
-        #(10*T) CPU_RESETN = 1;
+        #(20*T) CPU_RESETN = 1;
 
         $stop;
     end
